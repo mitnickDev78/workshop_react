@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useOptimistic } from "react";
 import TodoList from "./components/Todo/TodoList";
 import TodoForm from "../src/components/Todo/TodoForm";
 
@@ -13,17 +13,27 @@ interface Todo {
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [optimisticTodos, setOptimisticTodos] = useOptimistic(todos);
 
-  const addTodo = (text: string) => {
+  const addTodo = async (text: string): Promise<void> => {
     setTodos([...todos, { id: Date.now(), text, completed: false }]);
   };
 
   const toggleComplete = (id: number) => {
-    setTodos( prev =>
-      prev.map(todo => 
+    setOptimisticTodos((prevTodos) => 
+      prevTodos.map(todo => 
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
+
+  //Mise à jour réelle après un petit délai (ex: si on attend une API)
+  setTimeout(() => {
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }, 1000);
     
     // setTodos(todos.map(todo => 
     //   todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -38,7 +48,7 @@ function App() {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Ma To-Do App</h1>
       <TodoForm addTodo={addTodo} />
-      <TodoList todos={todos} toggleComplete={toggleComplete} deleteTodo={deleteTodo} />
+      <TodoList todos={optimisticTodos} toggleComplete={toggleComplete} deleteTodo={deleteTodo} />
     </div>
   );
 }

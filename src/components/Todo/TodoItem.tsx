@@ -10,7 +10,7 @@ interface Todo {
     deleteTodo: (id: number) => void;
   }
   
-  const TodoItem: React.FC<TodoItemProps> = ({ todo, toggleComplete, deleteTodo }) => {
+const TodoItem = ({ todo, toggleComplete, deleteTodo }: TodoItemProps) => {
     return (
       <div className="flex items-center justify-between bg-gray-100 p-2 rounded">
         <div className="flex items-center gap-2">
