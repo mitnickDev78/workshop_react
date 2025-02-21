@@ -7,7 +7,9 @@
   cd todo-app
   npm install
 ```
-C
+
+
+## Avec Docker
 #### 1. Construire l’image Docker
 docker-compose build
 
@@ -17,4 +19,8 @@ docker-compose up
 #### 3. Construire l’image Docker et Démarrer l’application en mode développement
 docker-compose up --build
 
+## Étape 4 : Créer les composants
+  TodoList.tsx
+  TodoItem.tsx
+  TodoForm.tsx
 
